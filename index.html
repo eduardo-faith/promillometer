@@ -14,18 +14,49 @@
         .navbar-brand {
             font-variant: small-caps;
         }
+
+        .container-fluid > .row {
+            margin-bottom: 12px;
+            border-bottom: 3px solid #ddd;
+        }
+
+        .container-fluid > div:first-child {
+            background-color: #ddd;
+        }
+
         #pm-div-alcohol-level {
-            background-color: #dddddd;
+            background-color: #fff;
+            border-top: 3px solid #ddd;
         }
 
         #pm-alcohol-level + span {
             font-size: 1.5rem;
         }
 
-        .btn {
+        .btn, .card {
             -webkit-border-radius: 0;
             -moz-border-radius: 0;
             border-radius: 0;
+        }
+
+        #row-neu-trinken {
+            display: none;
+        }
+
+        #row-neu-trinken > div {
+            padding: 12px;
+        }
+
+        #row-neu-trinken .form-control {
+            border-radius: 0;
+        }
+
+        .card-deck {
+            margin-bottom: 12px;
+        }
+
+        .card-body {
+            padding: 1rem;
         }
     </style>
 </head>
@@ -56,28 +87,100 @@
                 <span id="pm-alcohol-level" class="display-4">0,00</span>
                 <span>&permil;</span>
             </p>
-            <a class="btn btn-outline-secondary">aktualisieren</a>
+            <a class="btn btn-danger" href="#">aktualisieren</a>
         </div>
         <div class="col-lg-1 d-none d-lg-block"></div>
         <div class="col-lg-6 py-3">
-            <h1 class="display-5">Trinken</h1>
+            <h2>Trinken</h2>
 
-            <a class="btn btn-outline-secondary">neu</a>
-            <a class="btn btn-outline-secondary">Bier</a>
-            <a class="btn btn-outline-secondary">Schnaps</a>
+            <a class="btn btn-outline-secondary disabled" href="javascript:neuTrinken();">neu</a>
+            <a class="btn btn-outline-secondary" href="javascript:neuTrinken(0);">Bier</a>
+            <a class="btn btn-outline-secondary" href="javascript:neuTrinken(1);">Schnaps</a>
+        </div>
+    </div>
+    <div class="row" id="row-neu-trinken">
+        <div class="col-lg-10 mx-lg-auto">
+            <form>
+                <div class="form-group">
+                    <input id="inputName" class="form-control" placeholder="Name des Getränks" />
+                </div>
+                <div class="form-group">
+                    <input id="inputVolumen" class="form-control" placeholder="Volumen in ml" />
+                </div>
+                <div class="form-group">
+                    <input id="inputProzent" class="form-control" placeholder="Prozent" />
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <a class="btn btn-block btn-outline-primary">ok</a>
+                    </div>
+                    <div class="col-4">
+                        <a class="btn btn-block btn-outline-warning">auf ex</a>
+                    </div>
+                    <div class="col-4">
+                        <a class="btn btn-block btn-outline-secondary" href="javascript:neuTrinkenAbbrechen();">abbrechen</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-10 mx-lg-auto">
-            Hier Getränk trinken
+            <h2>Verlauf</h2>
+            <div class="card-deck text-center">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Bier</h4>
+                        <p class="card-text">500ml, 5%</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">21:04 - 21:42</small>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Schnaps</h4>
+                        <p class="card-text">200ml, 42%.</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">21:30</small>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <!-- JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+<script>
+    neuTrinken = function(id = null) {
+        if (!$("#row-neu-trinken").is(":visible")) {
+            $("#row-neu-trinken").slideDown();
+        }
+
+        if (id == 0) {
+            $("#inputName").val("Bier");
+            $("#inputVolumen").val("500");
+            $("#inputProzent").val("4,8");
+        } else if (id == 1) {
+            $("#inputName").val("Schnaps");
+            $("#inputVolumen").val("20");
+            $("#inputProzent").val("42");
+
+        }
+    };
+
+    neuTrinkenAbbrechen = function() {
+        $("#row-neu-trinken").slideUp(400, function() {
+            $("#inputName").val("");
+            $("#inputVolumen").val("");
+            $("#inputProzent").val("");
+        });
+    };
+</script>
 </body>
 </html>
